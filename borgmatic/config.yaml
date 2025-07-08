@@ -1,0 +1,35 @@
+location:
+  source_directories:
+    - /root/asesorias
+
+  repositories:
+    - path: ssh://w22h3dx4@w22h3dx4.repo.borgbase.com/./repo
+      label: "asesorias-net on BorgBase"
+
+  ssh_command: ssh -i /root/.ssh/asesorias.net
+
+one_file_system: true
+compression: auto,zstd
+
+storage:
+  encryption_passphrase: "Ntk2T!Ga0CXrq7vsdxQsQO3ZHo6Nqch2XoILR34p1z9@Rh1Ev1slqyWbZ$s#993n$l!foyPqW4MJTuXja8xHI66VNHDgzKvvE37A"
+
+archive_name_format: '{hostname}-{now:%Y-%m-%d-%H%M%S}'
+
+retries: 5
+retry_wait: 5
+
+retention:
+  keep_daily: 3
+  keep_weekly: 4
+  keep_monthly: 12
+
+check_last: 3
+
+hooks:
+  before_backup:
+    - "sh -c 'echo \"$(date) - Starting backup\"'"
+    - "sh -c 'curl -H \"Content-Type: application/json\" -X POST -d \"{\\\"content\\\":\\\"Backup started on **$(hostname)** at $(date)\\\"}\" https://discord.com/api/webhooks/1391803413230260224/m1yJzoDZOqp0e-b8V6bUDmfPVua0_rz0HIB1Sf7cIw5oQ3S1OcpRwYOtohGciv0p2eei'"
+  after_backup:
+    - "sh -c 'echo \"$(date) - Finished backup\"'"
+    - "sh -c 'curl -H \"Content-Type: application/json\" -X POST -d \"{\\\"content\\\":\\\"Backup finished successfully on **$(hostname)** at $(date)\\\"}\" https://discord.com/api/webhooks/1391803413230260224/m1yJzoDZOqp0e-b8V6bUDmfPVua0_rz0HIB1Sf7cIw5oQ3S1OcpRwYOtohGciv0p2eei'"
