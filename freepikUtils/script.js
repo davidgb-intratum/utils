@@ -4,28 +4,74 @@
         return;
     }
 
-    window.downloadSource = function () {
-        const imgContainer = document.querySelector('[class*="relative"][class*="mx-auto"][class*="max-w-full"][class*="overflow-hidden"][class*="sm:rounded-xl"][class*="transition-all"][class*="max-h-[--detail-preview-max-height-mobile]"][class*="xs:max-h-[--detail-preview-max-height]"]');
-        const videoContainer = document.querySelector('[class*="relative"][class*="mx-auto"][class*="transition-all"][class*="aspect-video"][class*="min-h-full"][class*="max-w-full"][class*="self-center"][class*="overflow-hidden"][class*="rounded-none"][class*="object-contain"][class*="sm:rounded-none"][class*="lg:max-h-[calc(100vh-340px)]"]');
-        const iconContainer = document.querySelector('[class*="flex"][class*="items-center"][class*="justify-center"][class*="relative"][class*="px-7"][class*="py-24"][class*="bg-white"][class*="lg:rounded-xl"][class*="lg:border"][class*="lg:border-solid"][class*="lg:border-surface-border-1"][class*="order-1"]');
+    window.gcd = function(a, b) {
+        const d = (b === 0 ? a : gcd(b, a % b).divisor);
+
+        return {
+            ratio: [a / d, b / d],
+            divisor: d,
+        };
+    }
+
+    window.downloadSource = function (container) {
+        const imgContainer = container.querySelector('[class*="relative"][class*="mx-auto"][class*="max-w-full"][class*="overflow-hidden"][class*="sm:rounded-xl"][class*="transition-all"][class*="max-h-[--detail-preview-max-height-mobile]"][class*="xs:max-h-[--detail-preview-max-height]"]');
+        const videoContainer = container.querySelector('[class*="relative"][class*="mx-auto"][class*="transition-all"][class*="aspect-video"][class*="min-h-full"][class*="max-w-full"][class*="self-center"][class*="overflow-hidden"][class*="rounded-none"][class*="object-contain"][class*="sm:rounded-none"][class*="lg:max-h-[calc(100vh-340px)]"]');
+        const iconContainer = container.querySelector('[class*="flex"][class*="items-center"][class*="justify-center"][class*="relative"][class*="px-7"][class*="py-24"][class*="bg-white"][class*="lg:rounded-xl"][class*="lg:border"][class*="lg:border-solid"][class*="lg:border-surface-border-1"][class*="order-1"]');
 
         let srcData = {
             url: null,
             from: null,
-            element: null
+            element: null,
+            premium: container.querySelector('[class*="flex"][class*="px-2"][class*="items-center"][class*="justify-center"][class*="rounded-full"][class*="bg-neutral-900/60"][class*="text-white"][class*="gap-2"][class*="text-xs"][class*="font-semibold"][class*="aspect-square"][class*="size-8"]') != null,
         };
 
         if (imgContainer) {
             const img = imgContainer.querySelector(":scope > img");
+            if (!img.complete) {
+                setTimeout(() => {
+                    downloadSource(container);    
+                }, 1000);
+
+                return;
+            }
+            
             const imgURL = img.getAttribute('srcset')
                 .split(',')
                 .map(entry => entry.trim())
                 .find(entry => entry.endsWith('1380w'))
                 ?.split(' ')[0];
 
+            const ratio = gcd(img.naturalWidth, img.naturalHeight).ratio;
+            let calculatedWidth = img.naturalWidth;
+            
+            if (ratio[0] > ratio[1]) {
+                calculatedWidth = (Math.round((img.naturalWidth * 0.8) / 100) * 100);
+            } else if (ratio[0] < ratio[1] || ratio[0] == ratio[1]) {
+                calculatedWidth = (Math.round((img.naturalWidth * 0.55) / 100) * 100);
+            }
+
             srcData.url = imgURL;
             srcData.from = "img";
-            srcData.element = img.cloneNode(true);
+            srcData.optimalWidth = srcData.premium ? calculatedWidth : 1380;
+
+            const url = new URL(srcData.url);
+            const newW = srcData.optimalWidth;
+            url.searchParams.set("w", newW);
+            const newUrl = url
+                .toString()
+                .replaceAll("%3D", "=")
+                .replaceAll("%7E", "~");
+
+            const newImg = document.createElement("img");
+            newImg.src = newUrl;
+            newImg.style.display = "block";
+            newImg.style.marginTop = "1rem";
+            newImg.style.maxWidth = "100%";
+            newImg.style.border = "1px solid #ddd";
+            newImg.style.borderRadius = "4px";
+
+            srcData.element = newImg;
+
         } else if (videoContainer) {
             const video = videoContainer.querySelector(":scope > video source");
             srcData.url = video.src;
@@ -89,7 +135,7 @@
 
             const input = Object.assign(document.createElement("input"), {
                 type: "number",
-                value: "1350",
+                value: srcData.optimalWidth,
                 min: "1",
                 style: `
                 padding: 0.3rem 0.5rem;
@@ -128,7 +174,10 @@
 
                 const newW = input.value;
                 url.searchParams.set("w", newW);
-                const newUrl = url.toString();
+                const newUrl = url
+                    .toString()
+                    .replaceAll("%3D", "=")
+                    .replaceAll("%7E", "~");
 
                 if (srcData.element && srcData.element.parentNode) {
                     srcData.element.parentNode.removeChild(srcData.element);
@@ -235,7 +284,7 @@
 
             customDownloadBtn.appendChild(svg);
             customDownloadBtn.addEventListener("click", () => {
-                downloadSource();
+                downloadSource(c.closest('[class*="max-w-[1920px]"][class*="mx-auto"][class*="grid"][class*="gap-5"][class*="grid-cols-1"][class*="xs:grid-cols-[1fr_auto]"]'));
             });
 
             c.insertBefore(customDownloadBtn, c.firstChild);
@@ -264,7 +313,6 @@
                     "relative mx-auto transition-all aspect-video min-h-full max-w-full self-center overflow-hidden rounded-none object-contain sm:rounded-none lg:max-h-[calc(100vh-340px)]",
                     "flex items-center justify-center relative px-7 py-24 bg-white lg:rounded-xl lg:border lg:border-solid lg:border-surface-border-1 order-1"
                 ].includes(t.className))
-                .map(e => { console.log(e); return e })
                 .forEach(_ => addCustomUtilities());
         });
 
