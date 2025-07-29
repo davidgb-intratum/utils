@@ -1,18 +1,20 @@
 (function () {
     if (window.location.pathname !== "/websites/createWebsite") {
         const params = new URLSearchParams(window.location.search);
-        const domain = params.get("domain");
+        let domain = params.get("domain");
         if (!domain) {
-            window.location.href = "/websites/createWebsite";
-            return;
+            domain = prompt("Please enter the domain name:");
+            if (!domain) return;
         }
         window.location.href = "/websites/createWebsite?domain=" + encodeURIComponent(domain);
         return;
     }
 
-    const domain = new URLSearchParams(window.location.search).get("domain");
+    let domain = new URLSearchParams(window.location.search).get("domain");
     if (!domain) {
-        alert("Missing domain param.");
+        domain = prompt("Please enter the domain name:");
+        if (!domain) return;
+        window.location.href = "/websites/createWebsite?domain=" + encodeURIComponent(domain);
         return;
     }
 
