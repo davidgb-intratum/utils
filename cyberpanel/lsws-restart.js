@@ -1,8 +1,14 @@
-(function() {
+(function () {
   const targetPath = "/serverstatus/services";
 
   if (window.location.pathname !== targetPath) {
-    window.location.href = targetPath;
+    const a = document.createElement("a");
+    a.href = targetPath;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    a.style.display = "none";
+    document.body.appendChild(a);
+    a.click();
     return;
   }
 
