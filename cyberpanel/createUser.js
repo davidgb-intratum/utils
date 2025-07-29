@@ -42,7 +42,6 @@ function fillAndSubmit(domain, delay = 0) {
         });
 
         $scope.$apply();
-
         form.querySelector("button[ng-click='createUserFunc()']").click();
     }, delay);
 }
@@ -52,6 +51,15 @@ domains.forEach((domain, i) => {
 });
 
 setTimeout(() => {
-    alert("All users created!")
-    window.location.href = "/websites/createWebsite";
+    domains.forEach(domain => {
+        const a = document.createElement('a');
+        a.href = `/websites/createWebsite?domain=${encodeURIComponent(domain)}`;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+    });
+
 }, domains.length * 1500 + 1000);
