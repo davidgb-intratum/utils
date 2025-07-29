@@ -19,7 +19,11 @@ function fillAndSubmit(domain, delay = 0) {
         const $scope = $form.scope();
 
         const data = {
-            firstName: (domain => (domain.split('.').slice(-2, -1)[0] || '').slice(0, 32))(domain),
+            firstName: (domain =>
+                (domain.split('.').slice(-2, -1)[0] || '')
+                    .replace(/\d+/g, '')
+                    .slice(0, 32)
+            )(domain),
             lastName: "intratum",
             email: `www@${domain}`,
             websitesLimits: 1,
