@@ -16,7 +16,7 @@
     window.downloadSource = function (container) {
         const imgContainer = container.querySelector('[class*="relative"][class*="mx-auto"][class*="max-w-full"][class*="overflow-hidden"][class*="sm:rounded-xl"][class*="transition-all"][class*="max-h-[--detail-preview-max-height-mobile]"][class*="xs:max-h-[--detail-preview-max-height]"]');
         const videoContainer = container.querySelector('[class*="relative"][class*="mx-auto"][class*="transition-all"][class*="aspect-video"][class*="min-h-full"][class*="max-w-full"][class*="self-center"][class*="overflow-hidden"][class*="rounded-none"][class*="object-contain"][class*="sm:rounded-none"][class*="lg:max-h-[calc(100vh-340px)]"]');
-        const iconContainer = container.querySelector('[class*="flex"][class*="items-center"][class*="justify-center"][class*="relative"][class*="px-7"][class*="py-24"][class*="bg-white"][class*="lg:rounded-xl"][class*="lg:border"][class*="lg:border-solid"][class*="lg:border-surface-border-1"][class*="order-1"]');
+        const iconContainer = container.querySelector('[class*="size-[384px]"][class*="flex"][class*="justify-center"][class*="items-center"][class*="rounded-xl"][class*="bg-white"]');
 
         let srcData = {
             url: null,
@@ -88,6 +88,11 @@
             srcData.from = "icon";
             srcData.element = icon.cloneNode(true);
         }
+
+        console.log(imgContainer);
+        console.log(videoContainer);
+        console.log(iconContainer);
+        console.log(srcData);
 
         const url = new URL(srcData.url);
         const originalUrl = url.toString();
