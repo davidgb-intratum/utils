@@ -102,33 +102,12 @@
 
         const popup = Object.assign(document.createElement("div"), {
             id: "custom-image-popup",
-            style: `
-            position: fixed;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 1rem;
-            z-index: 2147483647;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-            border-radius: 8px;
-            max-width: 90vw;
-            max-height: 90vh;
-            overflow: auto;
-            font-family: sans-serif;
-        `
+            style: `position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 1rem; z-index: 2147483647; box-shadow: 0 0 20px rgba(0,0,0,0.3); border-radius: 8px; max-width: 90vw; max-height: 90vh; overflow: auto; font-family: sans-serif;`
         });
 
         const closeBtn = Object.assign(document.createElement("button"), {
             textContent: "×",
-            style: `
-            position: absolute;
-            top: 5px;
-            right: 10px;
-            background: transparent;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-        `
+            style: `position: absolute; top: 5px; right: 10px; background: transparent; border: none; font-size: 1.5rem; cursor: pointer;`
         });
         closeBtn.onclick = () => popup.remove();
         popup.appendChild(closeBtn);
@@ -142,36 +121,18 @@
                 type: "number",
                 value: srcData.optimalWidth,
                 min: "1",
-                style: `
-                padding: 0.3rem 0.5rem;
-                font-size: 1rem;
-                width: 80px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-            `
+                style: `padding: 0.3rem 0.5rem; font-size: 1rem; width: 80px; border: 1px solid #ccc; border-radius: 4px;`
             });
 
             const submitBtn = Object.assign(document.createElement("button"), {
                 type: "submit",
                 textContent: "Actualizar",
-                style: `
-                padding: 0.3rem 0.8rem;
-                font-size: 1rem;
-                background-color: #3498db;
-                color: white;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-            `
+                style: `padding: 0.3rem 0.8rem; font-size: 1rem; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;`
             });
 
             const statusText = Object.assign(document.createElement("div"), {
                 textContent: "Imagen actual.",
-                style: `
-                margin-top: 0.5rem;
-                font-size: 0.9rem;
-                color: #666;
-            `
+                style: `margin-top: 0.5rem; font-size: 0.9rem; color: #666;`
             });
 
             form.onsubmit = (e) => {
