@@ -38,7 +38,7 @@
             const imgURL = img.getAttribute('srcset')
                 .split(',')
                 .map(entry => entry.trim())
-                .find(entry => entry.endsWith('1380w'))
+                .find(entry => entry.endsWith('1480w'))
                 ?.split(' ')[0];
 
             const ratio = gcd(img.naturalWidth, img.naturalHeight).ratio;
@@ -52,7 +52,7 @@
 
             srcData.url = imgURL;
             srcData.from = "img";
-            srcData.optimalWidth = srcData.premium ? calculatedWidth : 1380;
+            srcData.optimalWidth = srcData.premium ? calculatedWidth : 1480;
 
             const url = new URL(srcData.url);
             const newW = srcData.optimalWidth;
