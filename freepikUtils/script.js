@@ -50,6 +50,8 @@
                 calculatedWidth = (Math.round((img.naturalWidth * 0.55) / 100) * 100);
             }
 
+            calculatedWidth = 740;
+
             srcData.url = imgURL;
             srcData.from = "img";
             srcData.optimalWidth = srcData.premium ? calculatedWidth : 1480;
