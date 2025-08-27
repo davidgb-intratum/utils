@@ -22,6 +22,7 @@ function fillAndSubmit(domain, delay = 0) {
             firstName: (domain =>
                 (domain.split('.').slice(-2, -1)[0] || '')
                     .replace(/\d+/g, '')
+                    .replace(/-/g, ' ')
                     .slice(0, 32)
             )(domain),
             lastName: "intratum",
