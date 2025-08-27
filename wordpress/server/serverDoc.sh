@@ -170,8 +170,12 @@ if [ "$EUID" -ne 0 ]; then
     exec sudo bash "$0" "$@"
 fi
 
-read -p "Introduce el dominio de la web: " DOMAIN
-DOMAIN=$(echo "$DOMAIN" | xargs)
+DOMAIN=$1
+
+if [ -z "$DOMAIN" ]; then
+    read -p "Introduce el dominio de la web: " DOMAIN
+    DOMAIN=$(echo "$DOMAIN" | xargs)
+fi
 
 if [[ -z "$DOMAIN" || "$DOMAIN" =~ [[:space:]] || ! "$DOMAIN" =~ ^[a-zA-Z0-9.-]+$ ]]; then
     echo "¡Dominio no válido!"
