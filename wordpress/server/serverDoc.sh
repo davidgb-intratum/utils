@@ -95,6 +95,11 @@ EOL
     mkdir -p "$DOWNLOAD_DIR"
     cp "$TEMP_DIR/$DOMAIN.crt" "$DOWNLOAD_DIR/"
 
+    if [ -n "$SELECT_OPTION" ]; then
+        echo -e "\nComando SSH: scp $(who -m | awk '{print $1}')@$(hostname -I | awk '{print $1}'):$DOWNLOAD_DIR/$DOMAIN.crt pendingDocs/$DOMAIN.crt"
+        return;
+    fi
+
     echo -e "\n\nResumen de pasos para descargar y finalizar la documentación del certificado:"
     echo -e "\n1. Abrir CMD en Windows:"
     echo "   - Ve a la carpeta llamada \"docs\" en el escritorio de la maquina."
