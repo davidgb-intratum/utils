@@ -115,7 +115,7 @@ EOL
 
 
 end_documentation() {
-    echo -e "\n🔹 Finalizando documentación para el dominio: $DOMAIN"
+    echo -e "\nFinalizando documentación para el dominio: $DOMAIN"
 
     CERT_PATH="/etc/letsencrypt/live/$DOMAIN"
     [ -d "$CERT_PATH" ] || { echo -e "No existe la carpeta de los certificados: $CERT_PATH.\n¿Está la web subida?"; exit 1; }
