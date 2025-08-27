@@ -171,6 +171,7 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 DOMAIN=$1
+SELECT_OPTION=$2
 
 if [ -z "$DOMAIN" ]; then
     read -p "Introduce el dominio de la web: " DOMAIN
@@ -184,30 +185,27 @@ fi
 
 # --- Menú de opciones ---
 optionsMenu() {
-    echo -e "\nSelecciona una opción: "
-    select OPTION in "Empezar documentación" "Terminar documentación" "Salir"; do
-        case $REPLY in
-            1)
-                start_documentation
-                break
-                ;;
-            2)
-                end_documentation
-                break
-                ;;
-            3)
-                echo "Saliendo."
-                exit 0
-                ;;
-            *)
-                echo "Opción inválida. Saliendo..."
-                exit 1
-                ;;
+    if [ -n "$SELECT_OPTION" ]; then
+        case $SELECT_OPTION in
+            1) start_documentation ;;
+            2) end_documentation ;;
+            3) echo "Saliendo."; exit 0 ;;
+            *) echo "Opción inválida."; exit 1 ;;
         esac
-    done
+        exit 0
+    fi
 
-    echo -e "\n\nEsperando..."
-    optionsMenu
+    while true; do
+        echo -e "\nSelecciona una opción: "
+        select OPTION in "Empezar documentación" "Terminar documentación" "Salir"; do
+            case $REPLY in
+                1) start_documentation; break ;;
+                2) end_documentation; break ;;
+                3) echo "Saliendo."; exit 0 ;;
+                *) echo "Opción inválida. Intenta de nuevo."; break ;;
+            esac
+        done
+    done
 }
 
 optionsMenu
