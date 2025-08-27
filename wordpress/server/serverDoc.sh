@@ -183,24 +183,31 @@ if [[ -z "$DOMAIN" || "$DOMAIN" =~ [[:space:]] || ! "$DOMAIN" =~ ^[a-zA-Z0-9.-]+
 fi
 
 # --- Menú de opciones ---
-echo -e "\nSelecciona una opción: "
-select OPTION in "Empezar documentación" "Terminar documentación" "Salir"; do
-    case $REPLY in
-        1)
-            start_documentation
-            break
-            ;;
-        2)
-            end_documentation
-            break
-            ;;
-        3)
-            echo "Saliendo."
-            exit 0
-            ;;
-        *)
-            echo "Opción inválida. Saliendo..."
-            exit 1
-            ;;
-    esac
-done
+optionsMenu() {
+    echo -e "\nSelecciona una opción: "
+    select OPTION in "Empezar documentación" "Terminar documentación" "Salir"; do
+        case $REPLY in
+            1)
+                start_documentation
+                break
+                ;;
+            2)
+                end_documentation
+                break
+                ;;
+            3)
+                echo "Saliendo."
+                exit 0
+                ;;
+            *)
+                echo "Opción inválida. Saliendo..."
+                exit 1
+                ;;
+        esac
+    done
+
+    echo -e "\n\nEsperando..."
+    optionsMenu
+}
+
+optionsMenu
