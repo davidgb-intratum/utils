@@ -168,7 +168,7 @@
                     sessionStorage.setItem("restoringBackup", "true");
                     restoreBackup();
                 }
-            }, 2000);
+            }, 1000);
         }
 
         const fileList = document.getElementById("filelist");
